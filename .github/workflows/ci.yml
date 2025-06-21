@@ -97,10 +97,11 @@ jobs:
     
     - name: Publish to npm (if version changed)
       run: |
-        if npm view ${{ github.event.repository.name }} version | grep -q $(node -p "require('./package.json').version"); then
+        if npm view ${{ github.event.repository.name }} version 2>/dev/null | grep -q $(node -p "require('./package.json').version"); then
           echo "Version already exists, skipping publish"
         else
-          npm publish
+          echo "New version detected, would publish to npm (skipping for demo)"
+          # npm publish  # 実際に公開する場合はコメントアウト
         fi
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
